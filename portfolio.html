@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roman Smirnov · IT Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1e2530;
+      --border: #30363d;
+      --accent: #d4a843;
+      --accent-dim: rgba(212, 168, 67, 0.12);
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --chip-bg: #21262d;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2.5rem;
+      height: 60px;
+      background: rgba(13,17,23,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .85rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ────────────────────────────────────────── */
+    header {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 2.5rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-size: .78rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .hero-tagline {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted);
+      max-width: 600px;
+      margin-bottom: 2.4rem;
+      font-weight: 400;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .72rem 1.6rem;
+      border-radius: 6px;
+      font-size: .875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0d1117;
+    }
+
+    .btn-primary:hover { background: #e0b94e; transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover { color: var(--text); border-color: var(--muted); transform: translateY(-1px); }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .stat-num {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: .78rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-top: .3rem;
+    }
+
+    /* ── SECTIONS ─────────────────────────────────────── */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .8rem;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--text);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── ABOUT ───────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .about-text strong { color: var(--text); }
+
+    .about-side { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem 1.6rem;
+    }
+
+    .info-card h3 {
+      font-size: .72rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .45rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: .875rem;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+    .info-row .label { color: var(--muted); }
+    .info-row .value { color: var(--text); font-weight: 500; }
+
+    /* ── SKILLS ──────────────────────────────────────── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .skill-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+    .skill-name {
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: .5rem;
+    }
+
+    .skill-level {
+      font-size: .78rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: .8rem;
+    }
+
+    .skill-bar {
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .skill-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* ── CERTS ───────────────────────────────────────── */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .cert-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .cert-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(212,168,67,.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .cert-title { font-size: .9rem; font-weight: 600; color: var(--text); }
+    .cert-year { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
+
+    /* ── PORTFOLIO ────────────────────────────────────── */
+    .filter-bar {
+      display: flex;
+      gap: .6rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .filter-btn {
+      padding: .4rem 1rem;
+      border-radius: 20px;
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--chip-bg);
+      color: var(--muted);
+      transition: all .2s;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--accent-dim);
+      border-color: rgba(212,168,67,.5);
+      color: var(--accent);
+    }
+
+    .portfolio-table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .875rem;
+    }
+
+    thead th {
+      background: var(--surface2);
+      padding: .9rem 1.1rem;
+      text-align: left;
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--surface2); }
+
+    td { padding: .85rem 1.1rem; color: var(--text); vertical-align: middle; }
+
+    td:first-child { font-weight: 600; }
+
+    .industry-chip,
+    .role-chip,
+    .module-chip {
+      display: inline-block;
+      padding: .18rem .6rem;
+      border-radius: 12px;
+      font-size: .72rem;
+      font-weight: 500;
+      margin: .1rem;
+      white-space: nowrap;
+    }
+
+    .industry-chip { background: rgba(99,179,237,.12); color: #63b3ed; border: 1px solid rgba(99,179,237,.2); }
+    .role-chip     { background: rgba(154,230,180,.12); color: #9ae6b4; border: 1px solid rgba(154,230,180,.2); }
+    .module-chip   { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(212,168,67,.2); }
+    .work-text     { color: var(--muted); font-size: .82rem; }
+    .location-text { color: var(--muted); font-size: .82rem; }
+
+    /* hidden rows */
+    tr.hidden { display: none; }
+
+    /* ── CONTACT ─────────────────────────────────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .contact-text {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      padding: .9rem 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: .9rem;
+      transition: all .2s;
+    }
+
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateX(4px); }
+
+    .contact-link-icon { font-size: 1.1rem; }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2rem 2.5rem;
+      color: var(--muted);
+      font-size: .8rem;
+      border-top: 1px solid var(--border);
+      letter-spacing: .04em;
+    }
+
+    /* ── MAP ─────────────────────────────────────────── */
+    .map-wrap {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    #world-map {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* amCharts tooltip override */
+    .am5-tooltip-container { font-family: 'Inter', sans-serif !important; }
+
+    .map-legend {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+      font-size: .78rem;
+      color: var(--muted);
+      align-items: center;
+    }
+
+    .legend-item { display: flex; align-items: center; gap: .45rem; }
+    .legend-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .legend-fill { width: 16px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+    /* ── GLOBAL ENGAGEMENT CARDS ──────────────────────── */
+    .engagement-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .engagement-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      align-items: stretch;
+    }
+    @media (max-width: 900px) {
+      .engagement-grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* Featured Heineken card */
+    .eng-card-featured {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid #28a745;
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .eng-card-featured:hover { border-color: #28a745; transform: translateY(-2px); }
+    .featured-layout {
+      display: grid;
+      grid-template-columns: 220px 1px 1fr 1px 260px;
+      gap: 1.4rem;
+      align-items: start;
+    }
+    .featured-vdivider {
+      width: 1px;
+      background: var(--border);
+      align-self: stretch;
+      min-height: 100%;
+    }
+    .featured-identity .eng-company { font-size: 1.2rem; font-weight: 700; color: var(--text); }
+    .featured-identity .eng-scope   { font-size: .78rem; color: var(--muted); margin-top: .2rem; margin-bottom: .8rem; }
+    .featured-identity .eng-role    { font-size: .85rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .featured-impacts { display: flex; flex-direction: column; gap: 6px; }
+    .featured-countries .eng-countries-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; }
+    @media (max-width: 1000px) {
+      .featured-layout { grid-template-columns: 1fr; }
+      .featured-vdivider { display: none; }
+    }
+
+    .mod-chips { display: flex; flex-wrap: wrap; gap: 5px; margin: 5px 0 3px; }
+    .mod-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 9px; border-radius: 20px;
+      font-size: .69rem; font-weight: 500; white-space: nowrap;
+    }
+    .mod-ai   { background: rgba(139,92,246,.15); color: #c4b5fd; border: 1px solid rgba(139,92,246,.3); }
+    .mod-stat { background: rgba(45,123,229,.12);  color: #93c5fd; border: 1px solid rgba(45,123,229,.25); }
+    .mod-ops  { background: rgba(212,168,67,.12);  color: #fcd34d; border: 1px solid rgba(212,168,67,.25); }
+    .mod-label { font-size: .7rem; color: var(--muted); margin: 6px 0 2px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+
+    .eng-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      transition: border-color .2s, transform .2s;
+    }
+    .eng-meta { min-height: 195px; }
+    .mod-row { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin: 4px 0; }
+    .mod-lbl { font-size: .63rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; min-width: 36px; }
+    .eng-role {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .eng-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+    .eng-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .eng-company { font-size: 1.15rem; font-weight: 700; color: var(--text); }
+    .eng-scope   { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
+
+    .eng-badge {
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .25rem .65rem;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .badge-global { background: rgba(212,168,67,.15); color: var(--accent); border: 1px solid rgba(212,168,67,.3); }
+    .badge-latam  { background: rgba(99,179,237,.12); color: #63b3ed;       border: 1px solid rgba(99,179,237,.25); }
+
+    .eng-meta {
+      font-size: .8rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .eng-impact {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 14px;
+      background: rgba(212,168,67,.07);
+      border-left: 2px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 7px 10px;
+      font-size: .78rem;
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .eng-impact i {
+      color: var(--accent);
+      font-size: .75rem;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .eng-impact-label {
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .eng-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1rem 0;
+    }
+
+    .eng-countries-label {
+      font-size: .68rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .7rem;
+    }
+
+    .flags-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+    }
+
+    .flag-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      background: var(--chip-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .25rem .55rem;
+      font-size: .78rem;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .flag-chip span { font-size: .95rem; }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+
+    /* Hamburger button */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 200;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all .25s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 760px) {
+      /* Nav */
+      nav { padding: 0 1.2rem; }
+      .nav-hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 60px; left: 0; right: 0;
+        background: rgba(13,17,23,0.97);
+        backdrop-filter: blur(12px);
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        padding: 1rem 0 1.5rem;
+        border-bottom: 1px solid var(--border);
+        z-index: 150;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links li { width: 100%; text-align: center; }
+      .nav-links a { display: block; padding: .85rem 0; font-size: .9rem; }
+
+      /* Hero */
+      header { padding: 80px 1.2rem 2rem; }
+      .hero-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem 2rem;
+        margin-top: 2.5rem;
+      }
+
+      /* Sections */
+      section { padding: 3rem 1.2rem; }
+
+      /* Case Studies */
+      .featured-layout { grid-template-columns: 1fr; }
+      .featured-vdivider { display: none; }
+      .engagement-grid-3 { grid-template-columns: 1fr; }
+      .eng-meta { min-height: unset !important; }
+
+      /* Portfolio table */
+      .portfolio-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .portfolio-table-wrap table { min-width: 600px; }
+
+      /* Skills */
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .certs-grid  { grid-template-columns: 1fr; }
+
+      /* Contact buttons */
+      #email-btn, #contact a[href*="linkedin"] {
+        width: 100% !important;
+        justify-content: center;
+      }
+      #contact > div { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────── -->
+<nav>
+  <span class="nav-logo">Roman Smirnov</span>
+  <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#map">Where I've Worked</a></li>
+    <li><a href="#skills">Skills & Certs</a></li>
+    <li><a href="#global">Case Studies</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#contact">Let's Connect</a></li>
+  </ul>
+</nav>
+<script>
+  var navHamburger = document.getElementById('hamburger');
+  var navMenu      = document.getElementById('nav-links');
+  navHamburger.addEventListener('click', function() {
+    navHamburger.classList.toggle('open');
+    navMenu.classList.toggle('open');
+  });
+  navMenu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      navHamburger.classList.remove('open');
+      navMenu.classList.remove('open');
+    });
+  });
+</script>
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<header>
+  <h1>Builder.<br><span>Leader.</span><br>Optimizer.</h1>
+  <p class="hero-tagline">
+    Senior IT leader with 20+ years driving global supply chain transformations — from architecting solutions to directing multi-million dollar programs across retail, manufacturing, and distribution.
+  </p>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">22+</div>
+      <div class="stat-label">Global Clients</div>
+    </div>
+    <div>
+      <div class="stat-num">20+</div>
+      <div class="stat-label">Countries</div>
+    </div>
+    <div>
+      <div class="stat-num">20+</div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div>
+      <div class="stat-num">15+</div>
+      <div class="stat-label">BY Modules Mastered</div>
+    </div>
+  </div>
+</header>
+
+<!-- ── ABOUT ─────────────────────────────────────────────── -->
+
+<!-- ── MAP ─────────────────────────────────────────────────── -->
+<section id="map">
+  <h2>Where I've Worked</h2>
+  <p style="color:var(--muted);margin-bottom:1.5rem;font-size:.95rem;">
+    Two decades of on-the-ground delivery across North America, Europe, Asia, and Latin America.
+  </p>
+  <div class="map-wrap">
+    <div id="world-map" style="width:100%;height:480px;"></div>
+  </div>
+  <div class="map-legend">
+    <div class="legend-item">
+      <svg width="11" height="11" viewBox="0 0 11 11" style="flex-shrink:0"><rect width="11" height="11" rx="2" fill="#28a745"/></svg>
+      Heineken
+    </div>
+    <div class="legend-item">
+      <svg width="11" height="11" viewBox="0 0 11 11" style="flex-shrink:0"><rect width="11" height="11" rx="2" fill="#2d7be5"/></svg>
+      Mars
+    </div>
+    <div class="legend-item">
+      <svg width="11" height="11" viewBox="0 0 11 11" style="flex-shrink:0"><rect width="11" height="11" rx="2" fill="#e53d3d"/></svg>
+      Bridgestone
+    </div>
+    <div class="legend-item">
+      <svg width="11" height="11" viewBox="0 0 11 11" style="flex-shrink:0"><rect width="11" height="11" rx="2" fill="#f5c518"/></svg>
+      Walmart
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--accent);"></div>
+      Where I worked (hover for details)
+    </div>
+    <div class="legend-item">
+      <svg width="18" height="18" viewBox="0 0 18 18" style="flex-shrink:0">
+        <circle cx="9" cy="9" r="8" fill="none" stroke="#9ab8d8" stroke-width="2"/>
+        <circle cx="9" cy="9" r="3" fill="#9ab8d8"/>
+      </svg>
+      Former residence
+    </div>
+    <div class="legend-item">
+      <svg width="18" height="18" viewBox="0 0 18 18" style="flex-shrink:0">
+        <circle cx="9" cy="9" r="8" fill="none" stroke="#ffffff" stroke-width="2"/>
+        <circle cx="9" cy="9" r="3" fill="#ffffff"/>
+      </svg>
+      Current residence
+    </div>
+  </div>
+</section>
+
+<!-- ── GLOBAL ENGAGEMENT ────────────────────────────────────── -->
+<section id="global">
+  <h2>Case Studies</h2>
+  <p style="color:var(--muted);margin-bottom:2rem;font-size:.95rem;">
+    From deploying the largest project in Blue Yonder history at Walmart to steering a €100M global program at Heineken, I've built, scaled, and stabilized supply chain planning solutions across four continents.
+  </p>
+
+  <div class="engagement-section">
+
+    <!-- HEINEKEN — featured horizontal card -->
+    <div class="eng-card-featured">
+      <div class="featured-layout">
+
+        <!-- Col 1: Identity + Modules -->
+        <div class="featured-identity">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem;margin-bottom:.15rem;">
+            <div class="eng-company">Heineken</div>
+            <span class="eng-badge badge-global">Global</span>
+          </div>
+          <div class="eng-scope">Amsterdam, Netherlands · NYC<br>'19–present</div>
+          <div class="eng-role">Business Solutions Manager <span style="font-weight:400;color:var(--muted);font-size:.75rem;">· Global Planning</span></div>
+          <div class="mod-row">
+            <span class="mod-lbl">AI&nbsp;&amp;&nbsp;ML</span>
+            <span class="mod-chip mod-ai"><i class="fa-solid fa-brain"></i> LDE</span>
+            <span class="mod-chip mod-ai"><i class="fa-solid fa-microchip"></i> CDP</span>
+          </div>
+          <div class="mod-row">
+            <span class="mod-lbl">Supply</span>
+            <span class="mod-chip mod-ops"><i class="fa-solid fa-bolt"></i> ESP</span>
+            <span class="mod-chip mod-ops"><i class="fa-solid fa-industry"></i> IO</span>
+          </div>
+          <div class="mod-row">
+            <span class="mod-lbl">Demand &amp; Promo</span>
+            <span class="mod-chip mod-stat"><i class="fa-solid fa-chart-bar"></i> Demand</span>
+            <span class="mod-chip mod-stat"><i class="fa-solid fa-chart-line"></i> Flowcasting</span>
+            <span class="mod-chip mod-ops"><i class="fa-solid fa-arrows-rotate"></i> S&amp;OP</span>
+            <span class="mod-chip mod-stat"><i class="fa-solid fa-store"></i> Market Manager</span>
+          </div>
+        </div>
+
+        <div class="featured-vdivider"></div>
+
+        <!-- Col 2: Impacts -->
+        <div class="featured-impacts">
+          <div class="eng-impact"><i class="fa-solid fa-bolt-lightning"></i><div><span class="eng-impact-label">Impact</span>Steered operational stability of Heineken's €100M Blue Yonder investment across 15 countries</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-users"></i><div><span class="eng-impact-label">Impact</span>Increased user adoption from 4 planners to 150 global users (+3,650%)</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-shield-halved"></i><div><span class="eng-impact-label">Impact</span>Designed and executed a 5-day disaster recovery plan for 6 OpCos (16% of Heineken's global footprint) in response to the November 2024 Blue Yonder ransomware attack</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-gauge-high"></i><div><span class="eng-impact-label">Impact</span>Transformed system stability from ~60% to 99% availability, making Blue Yonder a trusted backbone for global planning operations</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-cloud-arrow-up"></i><div><span class="eng-impact-label">Impact</span>Spearheaded cloud migrations, platform upgrades, and data lake creation underpinning Heineken's 2030 AI transformation</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-microchip"></i><div><span class="eng-impact-label">Impact</span>Hands-on contributor to AI/ML product design, leading stabilization and support through and beyond go-live</div></div>
+        </div>
+
+        <div class="featured-vdivider"></div>
+
+        <!-- Col 3: Countries -->
+        <div class="featured-countries">
+          <div class="eng-countries-label">Countries covered</div>
+          <div class="flags-grid">
+            <div class="flag-chip"><span>🇺🇸</span> USA</div>
+            <div class="flag-chip"><span>🇳🇱</span> Netherlands</div>
+            <div class="flag-chip"><span>🇬🇧</span> UK</div>
+            <div class="flag-chip"><span>🇮🇪</span> Ireland</div>
+            <div class="flag-chip"><span>🇫🇷</span> France</div>
+            <div class="flag-chip"><span>🇪🇸</span> Spain</div>
+            <div class="flag-chip"><span>🇮🇹</span> Italy</div>
+            <div class="flag-chip"><span>🇧🇪</span> Belgium</div>
+            <div class="flag-chip"><span>🇵🇹</span> Portugal</div>
+            <div class="flag-chip"><span>🇵🇱</span> Poland</div>
+            <div class="flag-chip"><span>🇨🇭</span> Switzerland</div>
+            <div class="flag-chip"><span>🇧🇷</span> Brazil</div>
+            <div class="flag-chip"><span>🇲🇽</span> Mexico</div>
+            <div class="flag-chip"><span>🇻🇳</span> Vietnam</div>
+            <div class="flag-chip"><span>🇿🇦</span> South Africa</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3-column row: Walmart · Mars · Bridgestone -->
+    <div class="engagement-grid-3">
+
+      <!-- WALMART -->
+      <div class="eng-card" style="border-top: 3px solid #f5c518;">
+        <div class="eng-card-header">
+          <div>
+            <div class="eng-company">Walmart</div>
+            <div class="eng-scope">Bentonville · '09</div>
+          </div>
+          <span class="eng-badge badge-global">Global</span>
+        </div>
+        <div class="eng-meta">
+          <div class="eng-role">Deployment Lead</div>
+          <div class="mod-chips">
+            <span class="mod-chip mod-stat"><i class="fa-solid fa-chart-bar"></i> Demand</span>
+            <span class="mod-chip mod-ai"><i class="fa-solid fa-tags"></i> Demand Classification</span>
+          </div>
+          <div class="eng-impact"><i class="fa-solid fa-bolt-lightning"></i><div><span class="eng-impact-label">Impact</span>Led the largest project in Blue Yonder history. Increased forecast accuracy at Walmart by 5%</div></div>
+        </div>
+        <div class="eng-divider"></div>
+        <div class="eng-countries-label">Countries covered</div>
+        <div class="flags-grid">
+          <div class="flag-chip"><span>🇺🇸</span> USA</div>
+          <div class="flag-chip"><span>🇨🇦</span> Canada</div>
+          <div class="flag-chip"><span>🇲🇽</span> Mexico</div>
+        </div>
+      </div>
+
+      <!-- MARS -->
+      <div class="eng-card" style="border-top: 3px solid #2d7be5;">
+        <div class="eng-card-header">
+          <div>
+            <div class="eng-company">Mars</div>
+            <div class="eng-scope">NYC · '10–'12</div>
+          </div>
+          <span class="eng-badge badge-global">Global</span>
+        </div>
+        <div class="eng-meta">
+          <div class="eng-role">Solutions Architect</div>
+          <div class="mod-chips">
+            <span class="mod-chip mod-stat"><i class="fa-solid fa-chart-bar"></i> Demand</span>
+            <span class="mod-chip mod-stat"><i class="fa-solid fa-store"></i> Market Manager</span>
+          </div>
+          <div class="eng-impact"><i class="fa-solid fa-bolt-lightning"></i><div><span class="eng-impact-label">Impact</span>Designed revolutionary history cleansing and POS forecasting solutions resulting in 12% reduction of OOS</div></div>
+        </div>
+        <div class="eng-divider"></div>
+        <div class="eng-countries-label">Countries covered</div>
+        <div class="flags-grid">
+          <div class="flag-chip"><span>🇺🇸</span> USA</div>
+          <div class="flag-chip"><span>🇨🇦</span> Canada</div>
+          <div class="flag-chip"><span>🇩🇪</span> Germany</div>
+          <div class="flag-chip"><span>🇬🇧</span> UK</div>
+          <div class="flag-chip"><span>🇫🇷</span> France</div>
+          <div class="flag-chip"><span>🇳🇱</span> Netherlands</div>
+          <div class="flag-chip"><span>🇲🇽</span> Mexico</div>
+          <div class="flag-chip"><span>🇦🇺</span> Australia</div>
+        </div>
+      </div>
+
+      <!-- BRIDGESTONE -->
+      <div class="eng-card" style="border-top: 3px solid #e53d3d;">
+        <div class="eng-card-header">
+          <div>
+            <div class="eng-company">Bridgestone</div>
+            <div class="eng-scope">Nashville · '14–'15</div>
+          </div>
+          <span class="eng-badge badge-global">Regional</span>
+        </div>
+        <div class="eng-meta">
+          <div class="eng-role">Program Manager</div>
+          <div class="mod-chips">
+            <span class="mod-chip mod-stat"><i class="fa-solid fa-chart-bar"></i> Demand</span>
+            <span class="mod-chip mod-ops"><i class="fa-solid fa-handshake"></i> Collaborate</span>
+            <span class="mod-chip mod-ai"><i class="fa-solid fa-tags"></i> Demand Classification</span>
+          </div>
+          <div class="eng-impact"><i class="fa-solid fa-bolt-lightning"></i><div><span class="eng-impact-label">Impact</span>Implemented a unified Demand planning solution and S&amp;OP process across the region, resulting in 7% accuracy improvement</div></div>
+        </div>
+        <div class="eng-divider"></div>
+        <div class="eng-countries-label">Countries covered</div>
+        <div class="flags-grid">
+          <div class="flag-chip"><span>🇲🇽</span> Mexico</div>
+          <div class="flag-chip"><span>🇧🇷</span> Brazil</div>
+          <div class="flag-chip"><span>🇦🇷</span> Argentina</div>
+          <div class="flag-chip"><span>🇨🇱</span> Chile</div>
+          <div class="flag-chip"><span>🇨🇴</span> Colombia</div>
+          <div class="flag-chip"><span>🇨🇷</span> Costa Rica</div>
+          <div class="flag-chip"><span>🇻🇪</span> Venezuela</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SKILLS & CERTS ──────────────────────────────────────── -->
+<section id="skills">
+  <h2>Skills &amp; Certifications</h2>
+
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name">Architecture</div>
+      <div class="skill-level">Expert</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">Planning Software</div>
+      <div class="skill-level">Expert</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">Project Management</div>
+      <div class="skill-level">Expert</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+    </div>
+  </div>
+
+  <div class="certs-grid" style="margin-top:2.5rem;">
+    <div class="cert-card">
+      <div class="cert-icon">🏅</div>
+      <div>
+        <div class="cert-title">PMI PMP</div>
+        <div class="cert-year">Project Management Professional · 2017–2020</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🔄</div>
+      <div>
+        <div class="cert-title">Scrum Product Owner</div>
+        <div class="cert-year">Certified Scrum PO · 2023–2025</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🤖</div>
+      <div>
+        <div class="cert-title">Microsoft AI &amp; ML Engineering</div>
+        <div class="cert-year">Azure AI Engineering · In-progress</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PORTFOLIO ───────────────────────────────────────────── -->
+<section id="portfolio">
+  <h2>Portfolio</h2>
+  <p style="color:var(--muted);margin-bottom:1.8rem;font-size:.95rem;">
+    22 global engagements across retail, manufacturing, distribution, and e-commerce.
+    Filter by industry below.
+  </p>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="Retail">Retail</button>
+    <button class="filter-btn" data-filter="Manufacturing">Manufacturing</button>
+    <button class="filter-btn" data-filter="Distribution">Distribution</button>
+    <button class="filter-btn" data-filter="E-commerce">E-commerce</button>
+    <button class="filter-btn" data-filter="Re-manufacturing">Re-manufacturing</button>
+  </div>
+
+  <div class="portfolio-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Company / Client</th>
+          <th>Industry</th>
+          <th>Type of Work</th>
+          <th>My Role(s)</th>
+          <th>BY Modules in Scope</th>
+        </tr>
+      </thead>
+      <tbody id="portfolio-body">
+
+        <tr data-industry="Retail">
+          <td>Ace Hardware</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">Fulfillment</span></td>
+        </tr>
+
+        <tr data-industry="Manufacturing">
+          <td>Bridgestone</td>
+
+          <td><span class="industry-chip">Manufacturing</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Program Manager</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Collaborate</span><span class="module-chip">Demand Classification</span></td>
+        </tr>
+
+        <tr data-industry="Re-manufacturing">
+          <td>Cardone Industries</td>
+
+          <td><span class="industry-chip">Re-manufacturing</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Solutions Architect</span><span class="role-chip">Project Manager</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">ESP</span></td>
+        </tr>
+
+        <tr data-industry="Distribution">
+          <td>Coca-Cola Bottling</td>
+
+          <td><span class="industry-chip">Distribution</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Technical Architect</span></td>
+          <td><span class="module-chip">CPP</span></td>
+        </tr>
+
+        <tr data-industry="Manufacturing">
+          <td>Cooper Tires</td>
+
+          <td><span class="industry-chip">Manufacturing</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Solutions Architect</span><span class="role-chip">Project Manager</span></td>
+          <td><span class="module-chip">Sequencing</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>Dunnes Stores</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">Promotions</span></td>
+        </tr>
+
+        <tr data-industry="Manufacturing">
+          <td>General Electric</td>
+
+          <td><span class="industry-chip">Manufacturing</span></td>
+          <td class="work-text">Shipping auction</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">RFQ/RFQO</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>Harrods</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Solutions Architect</span><span class="role-chip">Project Manager</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Fulfillment</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>HEB</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">Redesign</td>
+          <td><span class="role-chip">Project Manager</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Fulfillment</span><span class="module-chip">Order Opt.</span></td>
+        </tr>
+
+        <tr data-industry="Manufacturing">
+          <td>Heineken</td>
+
+          <td><span class="industry-chip">Manufacturing</span></td>
+          <td class="work-text">Run</td>
+          <td><span class="role-chip">Business Solutions Manager</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Flowcasting</span><span class="module-chip">S&amp;OP</span><span class="module-chip">Market Manager</span><span class="module-chip">LDE</span><span class="module-chip">CDP</span><span class="module-chip">ESP</span><span class="module-chip">IO</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>Lenta</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Fulfillment</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>Limited Brands</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">Transportation</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>Lowe's</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">Transportation</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>Macy's</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">Proof of concept</td>
+          <td><span class="role-chip">Solutions Architect</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Fulfillment</span></td>
+        </tr>
+
+        <tr data-industry="Manufacturing">
+          <td>Mars</td>
+
+          <td><span class="industry-chip">Manufacturing</span></td>
+          <td class="work-text">Development, rollouts</td>
+          <td><span class="role-chip">Solutions Architect</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Market Manager</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>Mydin</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">Upgrade, redesign</td>
+          <td><span class="role-chip">Project Manager</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Fulfillment</span><span class="module-chip">Order Opt.</span></td>
+        </tr>
+
+        <tr data-industry="Manufacturing">
+          <td>Restoration Hardware</td>
+
+          <td><span class="industry-chip">Manufacturing</span></td>
+          <td class="work-text">Shipping auction</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">RFQ/RFQO</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>RONA</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">Demand</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>T-Mobile</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Fulfillment</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>Wal-Mart</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Demand Classification</span></td>
+        </tr>
+
+        <tr data-industry="E-commerce">
+          <td>Walmart.com</td>
+
+          <td><span class="industry-chip">E-commerce</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Demand Classification</span><span class="module-chip">Fulfillment</span></td>
+        </tr>
+
+        <tr data-industry="Retail">
+          <td>X5 Group</td>
+
+          <td><span class="industry-chip">Retail</span></td>
+          <td class="work-text">New deployment</td>
+          <td><span class="role-chip">Deployment Lead</span></td>
+          <td><span class="module-chip">Demand</span><span class="module-chip">Promotions</span></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── CONTACT ─────────────────────────────────────────────── -->
+<section id="contact">
+  <h2>Let's Connect</h2>
+  <div style="max-width:560px;margin:0 auto;text-align:center;display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;">
+    <a href="https://www.linkedin.com/in/rsmirnov2026" target="_blank" rel="noopener noreferrer"
+       style="display:inline-flex;align-items:center;justify-content:center;gap:.75rem;width:220px;background:#0a66c2;color:#fff;font-weight:600;font-size:1rem;padding:.85rem 2rem;border-radius:8px;text-decoration:none;transition:background .2s;"
+       onmouseover="this.style.background='#004182'" onmouseout="this.style.background='#0a66c2'">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+      Connect on LinkedIn
+    </a>
+    <button id="email-btn"
+       style="display:inline-flex;align-items:center;justify-content:center;gap:.75rem;width:220px;background:#d4a843;color:#0d1117;font-weight:600;font-size:1rem;padding:.85rem 2rem;border-radius:8px;border:none;cursor:pointer;transition:background .2s;"
+       onmouseover="this.style.background='#b8912e'" onmouseout="this.style.background='#d4a843'">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+      </svg>
+      Send an Email
+    </button>
+  </div>
+  <script>
+    document.getElementById('email-btn').addEventListener('click', function() {
+      var u = atob('cm9tYW4uc21pcm5vZmY=');
+      var d = atob('Z21haWwuY29t');
+      window.location.href = 'mailto:' + u + '@' + d;
+    });
+  </script>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────────── -->
+<footer>
+  © 2026 Roman Smirnov · Supply Chain &amp; IT Portfolio
+</footer>
+
+<script>
+  // ── World Map (amCharts 5 — single map) ──────────────
+  (function() {
+
+    var hidden = [
+      "AQ","NZ","GL",
+      "FJ","PG","SB","VU","WS","TO","FM","PW","MH","KI","NR","TV",
+      "PF","NC","GU","MP","CK","AS","CC","CX","NF","TK","WF","UM"
+    ];
+
+    // Countries in multiple engagements assigned to first matching; tooltip lists all.
+    var heiData = [   // Heineken — green
+      { id:"US", accounts:"Heineken · Mars · Bridgestone · Walmart" },
+      { id:"MX", accounts:"Heineken · Mars · Bridgestone · Walmart" },
+      { id:"BR", accounts:"Heineken · Bridgestone"        },
+      { id:"NL", accounts:"Heineken · Mars"               },
+      { id:"FR", accounts:"Heineken · Mars"               },
+      { id:"GB", accounts:"Heineken · Mars"               },
+      { id:"IE", accounts:"Heineken"                      },
+      { id:"BE", accounts:"Heineken"                      },
+      { id:"ES", accounts:"Heineken"                      },
+      { id:"PL", accounts:"Heineken"                      },
+      { id:"IT", accounts:"Heineken"                      },
+      { id:"PT", accounts:"Heineken"                      },
+      { id:"CH", accounts:"Heineken"                      },
+      { id:"VN", accounts:"Heineken"                      },
+      { id:"ZA", accounts:"Heineken"                      },
+    ];
+    var marsData = [  // Mars — blue
+      { id:"CA", accounts:"Mars · Walmart"                 },
+      { id:"DE", accounts:"Mars"                          },
+      { id:"AU", accounts:"Mars"                          },
+    ];
+    var bridgeData = [ // Bridgestone — red
+      { id:"CR", accounts:"Bridgestone"                   },
+      { id:"CO", accounts:"Bridgestone"                   },
+      { id:"VE", accounts:"Bridgestone"                   },
+      { id:"AR", accounts:"Bridgestone"                   },
+      { id:"CL", accounts:"Bridgestone"                   },
+    ];
+    var heiIds    = heiData.map(function(d){ return d.id; });
+    var marsIds   = marsData.map(function(d){ return d.id; });
+    var bridgeIds = bridgeData.map(function(d){ return d.id; });
+    var allSpecialIds = heiIds.concat(marsIds).concat(bridgeIds);
+
+    var allCities = [
+      { city:"Chicago",         lat:41.88,  lon: -87.63, client:"Ace Hardware",        role:"Deployment Lead"  },
+      { city:"Mexico City",     lat:19.43,  lon: -99.13, client:"Bridgestone",   role:"SA + PM"          },
+      { city:"Philadelphia",    lat:39.95,  lon: -75.17, client:"Cardone Industries",  role:"SA + PM"          },
+      { city:"Charlotte",       lat:35.23,  lon: -80.84, client:"Coca-Cola Bottling",  role:"TA"               },
+      { city:"Findlay, OH",     lat:41.04,  lon: -83.65, client:"Cooper Tires",        role:"SA + PM"          },
+      { city:"Dublin",          lat:53.33,  lon:  -6.25, client:"Dunnes Stores",       role:"Deployment Lead"  },
+      { city:"Washington DC",   lat:38.90,  lon: -77.04, client:"GE / Rest. Hardware", role:"Deployment Lead"  },
+      { city:"London",          lat:51.51,  lon:  -0.13, client:"Harrods",             role:"SA + PM"          },
+      { city:"Monterrey",       lat:25.67,  lon:-100.31, client:"HEB",                 role:"PM"               },
+      { city:"New York City",   lat:40.71,  lon: -74.01, client:"Heineken / Mars",     role:"PM + SA"          },
+      { city:"Amsterdam",       lat:52.37,  lon:   4.90, client:"Heineken",   role:"Business Solutions Manager" },
+      { city:"St. Petersburg",  lat:59.95,  lon:  30.32, client:"Lenta",               role:"Deployment Lead"  },
+      { city:"Columbus, OH",    lat:39.96,  lon: -82.99, client:"Limited Brands",      role:"Deployment Lead"  },
+      { city:"Mooresville, NC", lat:35.58,  lon: -80.81, client:"Lowe's",              role:"Deployment Lead"  },
+      { city:"Atlanta",         lat:33.75,  lon: -84.39, client:"Macy's",              role:"SA"               },
+      { city:"Kuala Lumpur",    lat: 3.15,  lon: 101.69, client:"Mydin",               role:"PM"               },
+      { city:"Montreal",        lat:45.51,  lon: -73.55, client:"RONA",                role:"Deployment Lead"  },
+      { city:"Seattle",         lat:47.61,  lon:-122.33, client:"T-Mobile",            role:"Deployment Lead"  },
+      { city:"Bentonville, AR", lat:36.37,  lon: -94.21, client:"Wal-Mart",            role:"Deployment Lead"  },
+      { city:"San Francisco",   lat:37.77,  lon:-122.42, client:"Walmart.com",         role:"Deployment Lead"  },
+      { city:"Moscow",          lat:55.75,  lon:  37.62, client:"X5 Group",            role:"Deployment Lead"  },
+      { city:"Querétaro",       lat:20.59,  lon:-100.39, client:"Mars",        role:"Deployment Lead"  },
+      { city:"Strasbourg",      lat:48.57,  lon:   7.75, client:"Mars",        role:"Deployment Lead"  },
+      { city:"Veghel",          lat:51.62,  lon:   5.55, client:"Mars",        role:"Deployment Lead"  },
+      { city:"Toronto",         lat:43.65,  lon: -79.38, client:"Mars",        role:"Deployment Lead"  },
+      { city:"Warsaw",          lat:52.23,  lon:  21.01, client:"Heineken",    role:"Business Solutions Manager" },
+      { city:"Madrid",          lat:40.42,  lon:  -3.70, client:"Heineken",    role:"Business Solutions Manager" },
+      { city:"Milan",           lat:45.47,  lon:   9.19, client:"Heineken",    role:"Business Solutions Manager" },
+      { city:"Bogotá",          lat: 4.71,  lon: -74.07, client:"Bridgestone",   role:"SA + PM"          },
+      { city:"Buenos Aires",    lat:-34.60, lon: -58.38, client:"Bridgestone",   role:"SA + PM"          },
+      { city:"Nashville, TN",   lat:36.17,  lon: -86.78, client:"Nashville, TN", role:"Deployment Lead"  },
+    ];
+
+    var root = am5.Root.new("world-map");
+    root.setThemes([am5themes_Animated.new(root)]);
+    root._logo && root._logo.dispose();
+
+    var chart = root.container.children.push(
+      am5map.MapChart.new(root, {
+        projection: am5map.geoNaturalEarth1(),
+        panX: "translateX", panY: "translateY", wheelY: "zoom",
+        homeGeoPoint: { latitude: 42, longitude: -15 },
+        homeZoomLevel: 2.2,
+        background: am5.Rectangle.new(root, { fill: am5.color(0x0d1117), fillOpacity: 1 })
+      })
+    );
+
+    // ── Background countries ──
+    var bgSeries = chart.series.push(
+      am5map.MapPolygonSeries.new(root, {
+        geoJSON: am5geodata_worldLow,
+        exclude: hidden.concat(allSpecialIds)
+      })
+    );
+    bgSeries.mapPolygons.template.setAll({
+      fill: am5.color(0x182333),
+      stroke: am5.color(0x263040),
+      strokeWidth: 0.4,
+      interactive: false
+    });
+
+    function makeEngagementSeries(ids, data, fillColor, strokeColor, hoverColor) {
+      var s = chart.series.push(
+        am5map.MapPolygonSeries.new(root, {
+          geoJSON: am5geodata_worldLow,
+          include: ids
+        })
+      );
+      s.mapPolygons.template.setAll({
+        fill: am5.color(fillColor),
+        stroke: am5.color(strokeColor),
+        strokeWidth: 1,
+        tooltipText: "[bold]{name}[/]\n[#8b949e]{accounts}[/]",
+        interactive: true
+      });
+      s.mapPolygons.template.states.create("hover", { fill: am5.color(hoverColor) });
+      s.data.setAll(data);
+      return s;
+    }
+
+    // All engagement countries — uniform neutral fill; colour identity comes from badges only
+    var allEngagementData = heiData.concat(marsData).concat(bridgeData);
+    makeEngagementSeries(allSpecialIds, allEngagementData, 0x1b2840, 0x3d5a7a, 0x253347);
+
+    // ── Multi-engagement badges ──
+    // Countries that span more than one engagement get a small pill at their
+    // centroid showing one coloured square per engagement they belong to.
+    var badgeSeries = chart.series.push(
+      am5map.MapPointSeries.new(root, { latitudeField: "lat", longitudeField: "lon" })
+    );
+    badgeSeries.bullets.push(function(r, series, dataItem) {
+      var d       = dataItem.dataContext;
+      var cols    = d.colors;
+      var dotSize = 7;
+      var gap     = 2;
+      var pad     = 3;
+      var totalW  = cols.length * (dotSize + gap) - gap + pad * 2;
+      var totalH  = dotSize + pad * 2;
+
+      var container = am5.Container.new(r, {
+        width:   totalW,
+        height:  totalH,
+        centerX: am5.p50,
+        centerY: am5.p50
+      });
+
+      // Dark pill background
+      container.children.push(am5.RoundedRectangle.new(r, {
+        width:           totalW,
+        height:          totalH,
+        x: 0, y: 0, centerX: 0, centerY: 0,
+        cornerRadiusTL:  4, cornerRadiusTR: 4,
+        cornerRadiusBL:  4, cornerRadiusBR: 4,
+        fill:            am5.color(0x0d1117),
+        fillOpacity:     0.82,
+        stroke:          am5.color(0x3a4252),
+        strokeOpacity:   0.7,
+        strokeWidth:     1
+      }));
+
+      // One coloured square per engagement
+      cols.forEach(function(hex, i) {
+        container.children.push(am5.RoundedRectangle.new(r, {
+          width:          dotSize,
+          height:         dotSize,
+          x: pad + i * (dotSize + gap), y: pad,
+          centerX: 0, centerY: 0,
+          cornerRadiusTL: 2, cornerRadiusTR: 2,
+          cornerRadiusBL: 2, cornerRadiusBR: 2,
+          fill:           am5.color(hex),
+          strokeWidth:    0
+        }));
+      });
+
+      return am5.Bullet.new(r, { sprite: container });
+    });
+
+    // All engagement country centroids and their colours:
+    // green=Heineken  blue=Mars  red=Bridgestone  yellow=Walmart
+    var badgeData = [
+      // ── Multi-engagement ──
+      { lat:  39.5, lon:  -98.4, colors: [0x28a745, 0x2d7be5, 0xe53d3d, 0xf5c518] }, // US
+      { lat:  23.6, lon: -102.5, colors: [0x28a745, 0x2d7be5, 0xe53d3d, 0xf5c518] }, // MX
+      { lat: -14.2, lon:  -51.9, colors: [0x28a745, 0xe53d3d] },                      // BR
+      { lat:  52.1, lon:    5.3, colors: [0x28a745, 0x2d7be5] },                      // NL
+      { lat:  46.2, lon:    2.2, colors: [0x28a745, 0x2d7be5] },                      // FR
+      { lat:  53.0, lon:   -1.5, colors: [0x28a745, 0x2d7be5] },                      // GB
+      { lat:  56.1, lon: -106.3, colors: [0x2d7be5, 0xf5c518] },                      // CA
+      // ── Heineken only ──
+      { lat:  53.4, lon:   -8.2, colors: [0x28a745] }, // IE
+      { lat:  50.5, lon:    4.5, colors: [0x28a745] }, // BE
+      { lat:  40.5, lon:   -3.7, colors: [0x28a745] }, // ES
+      { lat:  51.9, lon:   19.1, colors: [0x28a745] }, // PL
+      { lat:  42.5, lon:   12.5, colors: [0x28a745] }, // IT
+      { lat:  39.4, lon:   -8.2, colors: [0x28a745] }, // PT
+      { lat:  46.8, lon:    8.2, colors: [0x28a745] }, // CH
+      { lat:  14.1, lon:  108.3, colors: [0x28a745] }, // VN
+      { lat: -30.6, lon:   22.9, colors: [0x28a745] }, // ZA
+      // ── Mars only ──
+      { lat:  51.2, lon:   10.5, colors: [0x2d7be5] }, // DE
+      { lat: -25.3, lon:  133.8, colors: [0x2d7be5] }, // AU
+      // ── Bridgestone only ──
+      { lat:   9.7, lon:  -83.8, colors: [0xe53d3d] }, // CR
+      { lat:   4.6, lon:  -74.1, colors: [0xe53d3d] }, // CO
+      { lat:   6.4, lon:  -66.6, colors: [0xe53d3d] }, // VE
+      { lat: -38.4, lon:  -63.6, colors: [0xe53d3d] }, // AR
+      { lat: -35.7, lon:  -71.5, colors: [0xe53d3d] }, // CL
+    ];
+    badgeSeries.data.setAll(badgeData);
+
+    // ── Residence markers (rendered first so city dots appear on top) ──
+    var homeSeries = chart.series.push(
+      am5map.MapPointSeries.new(root, { latitudeField: "lat", longitudeField: "lon" })
+    );
+    homeSeries.bullets.push(function(r, series, dataItem) {
+      var d = dataItem.dataContext;
+      var color = d.current ? am5.color(0xffffff) : am5.color(0x9ab8d8);
+      var container = am5.Container.new(r, {});
+
+      // Outer ring
+      container.children.push(am5.Circle.new(r, {
+        radius: 9,
+        fill: am5.color(0x000000),
+        fillOpacity: 0,
+        stroke: color,
+        strokeWidth: 2
+      }));
+      // Inner filled dot
+      container.children.push(am5.Circle.new(r, {
+        radius: 3,
+        fill: color,
+        stroke: am5.color(0x0d1117),
+        strokeWidth: 1,
+        tooltipText: "[bold]{label}[/]\n[#8b949e]{sublabel}[/]",
+        cursorOverStyle: "pointer"
+      }));
+      return am5.Bullet.new(r, { sprite: container });
+    });
+    homeSeries.data.setAll([
+      { lat: 52.37, lon:  4.90,  label: "Amsterdam", sublabel: "Former residence",  current: false },
+      { lat: 40.73, lon: -74.05, label: "NYC Metro",  sublabel: "Current residence", current: true  },
+    ]);
+
+    // ── City dots (rendered after residence rings so gold dots appear on top) ──
+    var pointSeries = chart.series.push(
+      am5map.MapPointSeries.new(root, { latitudeField: "lat", longitudeField: "lon" })
+    );
+    pointSeries.bullets.push(function(r) {
+      var container = am5.Container.new(r, {});
+      var pulse = container.children.push(am5.Circle.new(r, {
+        radius: 4, fill: am5.color(0xd4a843), opacity: 0.28
+      }));
+      pulse.animate({ key:"radius", from:4, to:18, duration:1800, loops:Infinity, easing:am5.ease.out(am5.ease.cubic) });
+      pulse.animate({ key:"opacity", from:0.28, to:0, duration:1800, loops:Infinity, easing:am5.ease.out(am5.ease.cubic) });
+      var dot = container.children.push(am5.Circle.new(r, {
+        radius: 4,
+        fill: am5.color(0xd4a843),
+        stroke: am5.color(0x0d1117),
+        strokeWidth: 1.5,
+        tooltipText: "[bold]{client}[/]\n[#8b949e]{city}  ·  {role}[/]",
+        cursorOverStyle: "pointer"
+      }));
+      dot.states.create("hover", { radius: 7, fill: am5.color(0xe8c460) });
+      return am5.Bullet.new(r, { sprite: container });
+    });
+    pointSeries.data.setAll(allCities);
+
+    chart.appear(800, 100);
+
+  })();
+
+  // ── Filter logic ────────────────────────────────────
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const rows = document.querySelectorAll('#portfolio-body tr');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      rows.forEach(row => {
+        if (filter === 'all' || row.dataset.industry === filter) {
+          row.classList.remove('hidden');
+        } else {
+          row.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // ── Active nav highlight on scroll ──────────────────
+  const sections = document.querySelectorAll('section[id], header');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.style.color = '';
+          if (link.getAttribute('href') === '#' + entry.target.id) {
+            link.style.color = 'var(--accent)';
+          }
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

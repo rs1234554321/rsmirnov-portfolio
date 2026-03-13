@@ -286,6 +286,22 @@
       border-radius: 2px;
     }
 
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      margin-top: .9rem;
+    }
+
+    .skill-tag {
+      background: var(--chip-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .2rem .55rem;
+      font-size: .72rem;
+      color: var(--muted);
+    }
+
     /* ── CERTS ───────────────────────────────────────── */
     .certs-grid {
       display: grid;
@@ -513,7 +529,7 @@
     .eng-card-featured:hover { border-color: #28a745; transform: translateY(-2px); }
     .featured-layout {
       display: grid;
-      grid-template-columns: 220px 1px 1fr 1px 260px;
+      grid-template-columns: 240px 1px 1fr;
       gap: 1.4rem;
       align-items: start;
     }
@@ -754,8 +770,9 @@
   </button>
   <ul class="nav-links" id="nav-links">
     <li><a href="#map">Where I've Worked</a></li>
-    <li><a href="#skills">Skills & Certs</a></li>
     <li><a href="#global">Case Studies</a></li>
+    <li><a href="#skills">Skills &amp; Certs</a></li>
+    <li><a href="#awards">Awards</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
     <li><a href="#contact">Let's Connect</a></li>
   </ul>
@@ -854,7 +871,7 @@
 <section id="global">
   <h2>Case Studies</h2>
   <p style="color:var(--muted);margin-bottom:2rem;font-size:.95rem;">
-    From deploying the largest project in Blue Yonder history at Walmart to steering a €100M global program at Heineken, I've built, scaled, and stabilized supply chain planning solutions across four continents.
+    From deploying the largest project in Blue Yonder history at Walmart to steering a multi-million-euro global program at Heineken, I've built, scaled, and stabilized supply chain planning solutions across four continents.
   </p>
 
   <div class="engagement-section">
@@ -888,43 +905,45 @@
             <span class="mod-chip mod-ops"><i class="fa-solid fa-arrows-rotate"></i> S&amp;OP</span>
             <span class="mod-chip mod-stat"><i class="fa-solid fa-store"></i> Market Manager</span>
           </div>
+          <div style="margin-top:1rem;border-top:1px solid var(--border);padding-top:.8rem;">
+            <div class="eng-countries-label">Countries covered</div>
+            <div class="flags-grid">
+              <div class="flag-chip"><span>🇺🇸</span> USA</div>
+              <div class="flag-chip"><span>🇳🇱</span> Netherlands</div>
+              <div class="flag-chip"><span>🇬🇧</span> UK</div>
+              <div class="flag-chip"><span>🇮🇪</span> Ireland</div>
+              <div class="flag-chip"><span>🇫🇷</span> France</div>
+              <div class="flag-chip"><span>🇪🇸</span> Spain</div>
+              <div class="flag-chip"><span>🇮🇹</span> Italy</div>
+              <div class="flag-chip"><span>🇧🇪</span> Belgium</div>
+              <div class="flag-chip"><span>🇵🇹</span> Portugal</div>
+              <div class="flag-chip"><span>🇵🇱</span> Poland</div>
+              <div class="flag-chip"><span>🇨🇭</span> Switzerland</div>
+              <div class="flag-chip"><span>🇧🇷</span> Brazil</div>
+              <div class="flag-chip"><span>🇲🇽</span> Mexico</div>
+              <div class="flag-chip"><span>🇻🇳</span> Vietnam</div>
+              <div class="flag-chip"><span>🇿🇦</span> South Africa</div>
+            </div>
+          </div>
         </div>
 
         <div class="featured-vdivider"></div>
 
         <!-- Col 2: Impacts -->
         <div class="featured-impacts">
-          <div class="eng-impact"><i class="fa-solid fa-bolt-lightning"></i><div><span class="eng-impact-label">Impact</span>Steered operational stability of Heineken's €100M Blue Yonder investment across 15 countries</div></div>
-          <div class="eng-impact"><i class="fa-solid fa-users"></i><div><span class="eng-impact-label">Impact</span>Increased user adoption from 4 planners to 150 global users (+3,650%)</div></div>
-          <div class="eng-impact"><i class="fa-solid fa-shield-halved"></i><div><span class="eng-impact-label">Impact</span>Designed and executed a 5-day disaster recovery plan for 6 OpCos (16% of Heineken's global footprint) in response to the November 2024 Blue Yonder ransomware attack</div></div>
-          <div class="eng-impact"><i class="fa-solid fa-gauge-high"></i><div><span class="eng-impact-label">Impact</span>Transformed system stability from ~60% to 99% availability, making Blue Yonder a trusted backbone for global planning operations</div></div>
-          <div class="eng-impact"><i class="fa-solid fa-cloud-arrow-up"></i><div><span class="eng-impact-label">Impact</span>Spearheaded cloud migrations, platform upgrades, and data lake creation underpinning Heineken's 2030 AI transformation</div></div>
-          <div class="eng-impact"><i class="fa-solid fa-microchip"></i><div><span class="eng-impact-label">Impact</span>Hands-on contributor to AI/ML product design, leading stabilization and support through and beyond go-live</div></div>
+          <!-- NYC Metro bullets — strongest first -->
+          <div class="eng-impact"><i class="fa-solid fa-shield-halved"></i><div><span class="eng-impact-label">Impact</span>Designed and executed a highly complex 5-day disaster recovery and restart plan for multiple operating companies in response to a major industry-wide ransomware attack, avoiding potential operational shutdown at multiple breweries</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-cloud-arrow-up"></i><div><span class="eng-impact-label">Impact</span>Spearheaded SaaS Azure cloud migrations and data platform development, leading cross-functional teams of 20+ engineers, planners, and data specialists across multiple countries supporting the EverGreen 2030 transformation roadmap</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-ticket"></i><div><span class="eng-impact-label">Impact</span>Guided a 6-member orchestration team through nearly 600 annual incidents, service requests, and root-cause analyses — driving a 45% reduction in average ticket age</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-star"></i><div><span class="eng-impact-label">Impact</span>Drove a 10% NPS improvement for Global Planning through structured user surveys, post-action initiatives, and a formal key user framework</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-bolt-lightning"></i><div><span class="eng-impact-label">Impact</span>Steered BaU operations across a multi-million-euro Blue Yonder investment spanning 16 countries, ensuring operational continuity and successful onboarding during global rollout</div></div>
+          <!-- Amsterdam bullets — strongest first -->
+          <div class="eng-impact"><i class="fa-solid fa-layer-group"></i><div><span class="eng-impact-label">Impact</span>Built scalable Blue Yonder and Infor BaU operations from the ground up — establishing support processes, escalation protocols, incident communication, and documentation repositories — enabling growth from 2 pilot OpCos to 16 fully operational markets across Netherlands, Brazil, Mexico, USA, and Vietnam</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-users"></i><div><span class="eng-impact-label">Impact</span>Enabled user adoption to scale from 4 planners to 150 global users (+3,650%) through SSO, user communities, and key user conferences</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-gauge-high"></i><div><span class="eng-impact-label">Impact</span>Drove system availability to near-perfect uptime levels, establishing Blue Yonder as the trusted backbone of Heineken's global supply chain planning</div></div>
+          <div class="eng-impact"><i class="fa-solid fa-virus-covid"></i><div><span class="eng-impact-label">Impact</span>Launched a real-time scenario planning capability integrating demand and supply modules to support multi-country decision-making during COVID-19 disruptions</div></div>
         </div>
 
-        <div class="featured-vdivider"></div>
-
-        <!-- Col 3: Countries -->
-        <div class="featured-countries">
-          <div class="eng-countries-label">Countries covered</div>
-          <div class="flags-grid">
-            <div class="flag-chip"><span>🇺🇸</span> USA</div>
-            <div class="flag-chip"><span>🇳🇱</span> Netherlands</div>
-            <div class="flag-chip"><span>🇬🇧</span> UK</div>
-            <div class="flag-chip"><span>🇮🇪</span> Ireland</div>
-            <div class="flag-chip"><span>🇫🇷</span> France</div>
-            <div class="flag-chip"><span>🇪🇸</span> Spain</div>
-            <div class="flag-chip"><span>🇮🇹</span> Italy</div>
-            <div class="flag-chip"><span>🇧🇪</span> Belgium</div>
-            <div class="flag-chip"><span>🇵🇹</span> Portugal</div>
-            <div class="flag-chip"><span>🇵🇱</span> Poland</div>
-            <div class="flag-chip"><span>🇨🇭</span> Switzerland</div>
-            <div class="flag-chip"><span>🇧🇷</span> Brazil</div>
-            <div class="flag-chip"><span>🇲🇽</span> Mexico</div>
-            <div class="flag-chip"><span>🇻🇳</span> Vietnam</div>
-            <div class="flag-chip"><span>🇿🇦</span> South Africa</div>
-          </div>
-        </div>
 
       </div>
     </div>
@@ -1031,42 +1050,66 @@
 
   <div class="skills-grid">
     <div class="skill-card">
-      <div class="skill-name">Architecture</div>
+      <div class="skill-name">Program Leadership</div>
       <div class="skill-level">Expert</div>
-      <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+      <div class="skill-bar"><div class="skill-fill" style="width:98%"></div></div>
+      <div class="skill-tags">
+        <span class="skill-tag">Project &amp; Program Management</span>
+        <span class="skill-tag">Global Multi-Million-Dollar Programs</span>
+        <span class="skill-tag">Cross-Functional Technical Teams</span>
+        <span class="skill-tag">Senior Stakeholder Management</span>
+        <span class="skill-tag">Change Management</span>
+        <span class="skill-tag">Business Process Design</span>
+      </div>
     </div>
     <div class="skill-card">
-      <div class="skill-name">Planning Software</div>
-      <div class="skill-level">Expert</div>
-      <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+      <div class="skill-name">AI &amp; Data Science</div>
+      <div class="skill-level">Advanced</div>
+      <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+      <div class="skill-tags">
+        <span class="skill-tag">BY Cognitive Demand Planning</span>
+        <span class="skill-tag">BY Luminate Demand Edge</span>
+        <span class="skill-tag">Microsoft Azure SaaS</span>
+        <span class="skill-tag">Azure Data Lake / Databricks</span>
+        <span class="skill-tag">Azure SSO &amp; Access Management</span>
+        <span class="skill-tag">Oracle DB &amp; SQL</span>
+      </div>
     </div>
     <div class="skill-card">
-      <div class="skill-name">Project Management</div>
+      <div class="skill-name">Blue Yonder Advanced Planning Software</div>
       <div class="skill-level">Expert</div>
-      <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+      <div class="skill-bar"><div class="skill-fill" style="width:98%"></div></div>
+      <div class="skill-tags">
+        <span class="skill-tag">Demand</span>
+        <span class="skill-tag">Fulfillment</span>
+        <span class="skill-tag">Flowcasting</span>
+        <span class="skill-tag">ESP</span>
+        <span class="skill-tag">Promotions</span>
+        <span class="skill-tag">Systems Architecture &amp; Integrations with SAP &amp; Reporting</span>
+      </div>
     </div>
   </div>
 
   <div class="certs-grid" style="margin-top:2.5rem;">
     <div class="cert-card">
-      <div class="cert-icon">🏅</div>
-      <div>
-        <div class="cert-title">PMI PMP</div>
-        <div class="cert-year">Project Management Professional · 2017–2020</div>
-      </div>
-    </div>
-    <div class="cert-card">
-      <div class="cert-icon">🔄</div>
-      <div>
-        <div class="cert-title">Scrum Product Owner</div>
-        <div class="cert-year">Certified Scrum PO · 2023–2025</div>
-      </div>
-    </div>
-    <div class="cert-card">
       <div class="cert-icon">🤖</div>
       <div>
-        <div class="cert-title">Microsoft AI &amp; ML Engineering</div>
-        <div class="cert-year">Azure AI Engineering · In-progress</div>
+        <div class="cert-title">PMI: AI Project Manager</div>
+        <div class="cert-year">Project Management Institute · 2026–present</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AWARDS ─────────────────────────────────────────────── -->
+<section id="awards">
+  <h2>Awards</h2>
+  <div class="certs-grid" style="margin-top:1.5rem;">
+    <div class="cert-card">
+      <div class="cert-icon">🏆</div>
+      <div>
+        <div class="cert-title">ICON Project of the Year 2019</div>
+        <div class="cert-year">Harrods · Architect &amp; Project Manager</div>
       </div>
     </div>
   </div>
@@ -1076,7 +1119,7 @@
 <section id="portfolio">
   <h2>Portfolio</h2>
   <p style="color:var(--muted);margin-bottom:1.8rem;font-size:.95rem;">
-    22 global engagements across retail, manufacturing, distribution, and e-commerce.
+    22 global engagements across retail, manufacturing, distribution, and e-commerce — including 15 delivered as an independent consultant (2012–2019).
     Filter by industry below.
   </p>
 
